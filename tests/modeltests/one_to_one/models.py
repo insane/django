@@ -11,6 +11,18 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
 
+class Related(models.Model):
+    pass
+
+
+class Base(models.Model):
+    test = models.IntegerField(null=True)
+
+
+class SubClass(Base):
+    rel = models.OneToOneField(Related, related_name='base')
+
+
 @python_2_unicode_compatible
 class Place(models.Model):
     name = models.CharField(max_length=50)

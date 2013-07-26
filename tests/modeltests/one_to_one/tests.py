@@ -4,7 +4,7 @@ from django.db import transaction, IntegrityError
 from django.test import TestCase
 
 from .models import (Place, Restaurant, Waiter, ManualPrimaryKey, RelatedModel,
-    MultiModel)
+                     MultiModel, Related, Base, SubClass)
 
 class OneToOneTests(TestCase):
 
@@ -15,6 +15,11 @@ class OneToOneTests(TestCase):
         self.p2.save()
         self.r = Restaurant(place=self.p1, serves_hot_dogs=True, serves_pizza=False)
         self.r.save()
+
+    def test_inheritance(self):
+        rel = Related.objects.create()
+        obj = SubClass.objects.create(rel=rel)
+        self.assertEqual([rel], list(Related.objects.select_related('base')))
 
     def test_getter(self):
         # A Restaurant can access its place.
